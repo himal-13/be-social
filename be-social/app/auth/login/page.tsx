@@ -70,7 +70,7 @@ const Login: React.FC = () => {
 
     return (
         <div className="min-h-screen flex items-center justify-center ">
-        <div className=" p-6 rounded-lg shadow-md w-full max-w-md">
+        <div className=" p-6 rounded-lg sm:shadow-md w-full max-w-md">
             <h2 className=" text-4xl md:text-5xl font-bold font-sans mb-6">Welcome back!</h2>
             {loginError &&<h3 className='p-2 bg-red-300 flex items-center'><span className='p-2 cursor-pointer' onClick={()=>setLoginError('')}><RxCross2 /></span>{loginError}</h3>}
             <form onSubmit={handleSubmit}>

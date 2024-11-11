@@ -2,46 +2,82 @@ import Spinner from '@/utils/Spinner'
 import React, { useState } from 'react'
 
 interface Props{
-    sendVerification:()=>void
+    sendVerification:()=>void,
+    isLoading:boolean
 }
 
 
-const MoreDetails = ({sendVerification}:Props) => {
-    const[isLoading,setIsLoading] =useState(false) 
+const MoreDetails = ({sendVerification,isLoading}:Props) => {
     const[dob,setDOB]= useState('')
     const[userName,setUserName]= useState('')
+    const[errorMsg,setErrorMsg] = useState({
+      unameError:'',
+      dobError:''
+    })
 
     const handleSubmit=async()=>{
-        if(dob ){
+      console.log(dob)
+      const newError = {unameError:'',dobError:''}
+        if(dob  && userName.trim()){
             sendVerification()
         }
+        else {
+          if(!dob && !userName.trim()){
+            newError.dobError='please add valid DOB'
+            newError.unameError='please add valid user name'
+          }
+          if(!dob){
+            newError.dobError='please add valid DOB'
+
+          }
+          if(!userName.trim()){
+            newError.unameError='please add valid user name'
+
+          }
+
+
+        }
+        setErrorMsg(newError)
         
     }
     
   return (
-    <div className="p-6 rounded-lg shadow-md w-full max-w-lg">
-        <h1 className='text-2xl'>Update your Info</h1>
-        <div className="">
-            <label htmlFor="">userName</label>
-            <input type="text" placeholder='jhondoe123' value={userName} onChange={(e)=>e.target.value}
-              className={`w-full px-3 py-2 border 'border-red-500' : 'border-gray-300' rounded-md focus:outline-none focus:ring focus:ring-blue-500`}
+    <>
+       
+        <div className="mb-4">
+            <label htmlFor="uName" className="block ">Name</label>
+            <input
+              type="text"
+              id="uName"
+              name="userName"
+              value={userName}
+              onChange={(e)=>setUserName(e.target.value)}
+              className={`w-full px-3 py-2 border ${errorMsg.unameError? 'border-red-500' : 'border-gray-300'} rounded-md focus:outline-none focus:ring focus:ring-blue-500`}
+              required
             />
-        </div>
-        <div className="">
-            <label htmlFor="">DOB</label>
-            <input type="date" placeholder='Date of birth' value={dob} onChange={(e)=>setDOB(e.target.value)}
-              className={`w-full px-3 py-2 border 'border-red-500' : 'border-gray-300' rounded-md focus:outline-none focus:ring focus:ring-blue-500`}
-
+            {errorMsg.unameError && <p className="text-red-500 text-sm mt-1">{errorMsg.unameError}</p>}
+          </div>
+        <div className="mb-4">
+            <label htmlFor="date" className="block  text-sm">DOB</label>
+            <input
+              type="date"
+              id='date'
+              name="date"
+              value={dob}
+              onChange={(e)=>setDOB(e.target.value)}
+              className={`w-full px-3 py-2 border ${errorMsg.dobError? 'border-red-500' : 'border-gray-300'} rounded-md focus:outline-none focus:ring focus:ring-blue-500`}
+              required
             />
+            {errorMsg.dobError && <p className="text-red-500 text-sm mt-1">{errorMsg.dobError}</p>}
         </div>
         <button
-            type="submit"
+            type="button"
             className="w-full bg-blue-500 text-white py-2 rounded-md hover:bg-blue-600 transition duration-300"
-            onSubmit={handleSubmit}
+            onClick={handleSubmit}
           >
-           {isLoading?<Spinner/>:"Next"}
+           {isLoading?<Spinner/>:"Signup"}
           </button>
-    </div>
+      </>
   )
 }
 

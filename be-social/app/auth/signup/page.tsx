@@ -7,6 +7,7 @@ import Spinner from '@/utils/Spinner';
 import { createUserWithEmailAndPassword, sendEmailVerification } from 'firebase/auth';
 import { useRouter } from 'next/navigation';
 import React, { useState } from 'react';
+import { IoIosArrowRoundBack } from 'react-icons/io';
 import { RxCross2 } from 'react-icons/rx';
 
 const Signup = () => {
@@ -71,25 +72,31 @@ const Signup = () => {
   };
 
   const handleSubmit =async (e: React.FormEvent) => {
-    setIsLoading(true)
     e.preventDefault();
 
     if (validateForm()) {
-      try{
-        const credentials = await createUserWithEmailAndPassword(auth,formData.email,formData.confirmPassword)
-        sendEmailVerification(credentials.user)
-        setSteps('details')
+      setSteps('details')
 
-      }catch(e:any){
-        setLoginError(e.code.toString())
-        setIsLoading(false)
-
-      }
-      
     }
   };
 
   const sendVerification=async()=>{
+
+    setIsLoading(true)
+    try{
+      const credentials = await createUserWithEmailAndPassword(auth,formData.email,formData.confirmPassword)
+      sendEmailVerification(credentials.user)
+      if(credentials){
+        setSteps('verify')
+      }
+
+    }catch(e:any){
+      setLoginError(e.code.toString())
+      setSteps('zero')
+      setIsLoading(false)
+
+    }
+    
     
   }
 
@@ -102,14 +109,14 @@ const Signup = () => {
 
 
     <div className="min-h-screen flex items-center justify-center ">
-      {
-        steps==='details'?<MoreDetails sendVerification={()=>sendVerification()}/>:(
 
        
-      <div className="p-6 rounded-lg shadow-md w-full max-w-lg">
-        <h2 className=" text-4xl md:text-5xl font-bold text-center font-sans mb-6">Join BeSocial</h2>
+      <div className="p-6 rounded-lg md:shadow-md w-full max-w-lg">
+       {steps ==='zero' && <h2 className=" text-4xl md:text-5xl font-bold text-center font-sans mb-6">Join BeSocial</h2>}
         {loginError &&<h3 className='p-2 bg-red-300 flex items-center'><span className='p-2 cursor-pointer' onClick={()=>setLoginError('')}><RxCross2 /></span>{loginError}</h3>}
-        <form onSubmit={handleSubmit}>
+        <div className={`max-w-lg relative overflow-hidden `}>
+
+        <form onSubmit={handleSubmit} className={`w-11/12 left-0 transition-all ${steps ==='details'?'-translate-x-[100vw]':'-translate-x-0'}`}>
           <div className="mb-4">
             <label htmlFor="name" className="block  mb-2">Name</label>
             <input
@@ -169,12 +176,20 @@ const Signup = () => {
            {isLoading?<Spinner/>:"Next"}
           </button>
         </form>
+        <section className={`absolute left-1/2 top-1/2 transition-all z-10 scale-125 -translate-y-1/2 ${steps ==='details'?'-translate-x-1/2':'-translate-x-[100vw]'}`}> 
+            <div className="flex gap-4 items-center">
+            <IoIosArrowRoundBack className='text-2xl' onClick={()=>setSteps('zero')} />
+              <h1 className='text-2xl font-bold'>Your Info</h1>
+            </div>
+            <MoreDetails isLoading={isLoading} sendVerification={()=>sendVerification()}/>
+        </section>
+         </div>
         <p className="text-center  mt-4">
           Already have an account? <span onClick={()=>router.replace('/auth/login')} className="text-blue-600 hover:underline cursor-pointer">Log In</span>
         </p>
       </div>
-       )
-      }
+      
+
     </div>
       )
 }
