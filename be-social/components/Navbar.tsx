@@ -21,7 +21,7 @@ const Navbar =()=>{
     }
 
     return(
-        <nav className="w-[300px] rounded-md shadow-md p-2 min-h-[100vh] mt-4">
+        <nav className="w-[300px] rounded-md shadow-md p-2 min-h-[100vh] mt-4 hidden md:block">
             <div className="flex items-center gap-2 my-2 py-2 shadow-sm">
                 <CgProfile className="text-3xl"/>
                 <section className="text-sm">

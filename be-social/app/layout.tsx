@@ -1,8 +1,10 @@
 import type { Metadata } from "next";
 import localFont from "next/font/local";
 import "./globals.css";
-import { ThemeProvider } from "@/utils/ThemeContext";
 import UserContextProvider from "@/utils/UserContext";
+import { Sidebar } from "lucide-react";
+import { SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar";
+import { AppSidebar } from "@/components/Sidebar";
 
 const geistSans = localFont({
   src: "./fonts/GeistVF.woff",
@@ -31,9 +33,21 @@ export default function RootLayout({
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
         <UserContextProvider>
-        <ThemeProvider>
+        {/* <ThemeProvider
+        attribute="class"
+        defaultTheme="system"
+        enableSystem
+        disableTransitionOnChange
+        > */}
+        <SidebarProvider>
+          <AppSidebar/>
+          <main>
+            <SidebarTrigger className="md:hidden"/>
           {children}
-        </ThemeProvider>
+
+          </main>
+          </SidebarProvider>
+        {/* </ThemeProvider> */}
         </UserContextProvider>
       </body>
     </html>

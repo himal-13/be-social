@@ -2,9 +2,10 @@
 
 import MoreDetails from '@/components/MoreDetails';
 import VerifyAccount from '@/components/VerifyAccount';
-import { auth } from '@/services/Firebase';
+import { auth, db } from '@/services/Firebase';
 import Spinner from '@/utils/Spinner';
 import { createUserWithEmailAndPassword, sendEmailVerification } from 'firebase/auth';
+import { addDoc, collection } from 'firebase/firestore';
 import { useRouter } from 'next/navigation';
 import React, { useState } from 'react';
 import { IoIosArrowRoundBack } from 'react-icons/io';
@@ -70,6 +71,16 @@ const Signup = () => {
     setErrors(newErrors);
     return formIsValid;
   };
+
+  const addUser=async(dob:string,userName:string)=>{
+    const newUser = {dob:dob,name:formData.name,email:formData.email,userName:userName }
+    try{
+      const docRef = await addDoc(collection(db,'users'),newUser);
+
+    }catch(e:any){
+      console.log(e.code)
+    }
+  }
 
   const handleSubmit =async (e: React.FormEvent) => {
     e.preventDefault();
@@ -181,7 +192,7 @@ const Signup = () => {
             <IoIosArrowRoundBack className='text-2xl' onClick={()=>setSteps('zero')} />
               <h1 className='text-2xl font-bold'>Your Info</h1>
             </div>
-            <MoreDetails isLoading={isLoading} sendVerification={()=>sendVerification()}/>
+            <MoreDetails addUser={addUser} isLoading={isLoading} sendVerification={()=>sendVerification()}/>
         </section>
          </div>
         <p className="text-center  mt-4">

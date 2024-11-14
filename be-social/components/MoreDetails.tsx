@@ -3,11 +3,12 @@ import React, { useState } from 'react'
 
 interface Props{
     sendVerification:()=>void,
-    isLoading:boolean
+    isLoading:boolean,
+    addUser:(dob:string,userName:string)=>void
 }
 
 
-const MoreDetails = ({sendVerification,isLoading}:Props) => {
+const MoreDetails = ({sendVerification,isLoading,addUser}:Props) => {
     const[dob,setDOB]= useState('')
     const[userName,setUserName]= useState('')
     const[errorMsg,setErrorMsg] = useState({
@@ -15,11 +16,14 @@ const MoreDetails = ({sendVerification,isLoading}:Props) => {
       dobError:''
     })
 
+
     const handleSubmit=async()=>{
       console.log(dob)
       const newError = {unameError:'',dobError:''}
         if(dob  && userName.trim()){
             sendVerification()
+            addUser(dob,userName)
+
         }
         else {
           if(!dob && !userName.trim()){
