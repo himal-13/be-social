@@ -8,7 +8,7 @@ type Post = {
     postedDate: Date;
   };
   
-  const posts: Post[] = [
+  const offLinePosts: Post[] = [
     {
       id: 1,
       accountName: "john_doe",
@@ -56,5 +56,5 @@ type Post = {
     },
   ];
   
-  export default posts;
+  export default offLinePosts;
   
