@@ -10,9 +10,7 @@ import {
   SidebarMenuButton,
   SidebarMenuItem,
 } from "@/components/ui/sidebar"
-import { Dialog, DialogTitle } from "@radix-ui/react-dialog"
 
-// Menu items.
 const items = [
   {
     title: "Home",

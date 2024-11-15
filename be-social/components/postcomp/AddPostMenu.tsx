@@ -10,7 +10,7 @@ interface props{
 }
 
 const AddPostMenu = ({fetchPosts}:props) => {
-    const{user,currentUser} = useUserContext()
+    const{currentUser} = useUserContext()
     const[postInput,setPostInput] = useState('')
 
     let loading = false;

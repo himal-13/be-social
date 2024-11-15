@@ -1,13 +1,14 @@
-import React from 'react'
+
 import {
-    Popover,
-    PopoverContent,
-    PopoverTrigger,
-  } from "@/components/ui/popover"
-import { BiEdit } from 'react-icons/bi'
-import { FaDeleteLeft } from 'react-icons/fa6'
-import { BsThreeDotsVertical } from 'react-icons/bs'
-import EditDialog from './EditDialog'
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuGroup,
+  DropdownMenuItem,
+  DropdownMenuShortcut,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu"
+import { LucideDelete } from "lucide-react";
+import { BsThreeDots } from "react-icons/bs";
 
 interface Props{
     handleEdit:()=>void,
@@ -17,18 +18,31 @@ interface Props{
 }
   
 
-const PoppupOver = ({handleDelete,id,content}:Props) => {
+const PoppupOver = ({handleDelete}:Props) => {
 
   
   return (
-    <Popover>
-        <PopoverTrigger><BsThreeDotsVertical /></PopoverTrigger>
-        <PopoverContent className='max-w-fit max-h-fit p-0 m-0'>
-            <EditDialog content={content} id={id}/>
-            <p className='flex gap-3 p-[5px] m-[5px] shadow-sm items-center' onClick={handleDelete}>delete <FaDeleteLeft/></p>
-        </PopoverContent>
-    </Popover>
-
+    <DropdownMenu>
+    <DropdownMenuTrigger asChild>
+      <span><BsThreeDots /></span>
+    </DropdownMenuTrigger>
+    <DropdownMenuContent className="w-56">
+      <DropdownMenuGroup>
+        <DropdownMenuItem className="text-red-600" onClick={handleDelete}>
+          Delete
+          <DropdownMenuShortcut ><LucideDelete/></DropdownMenuShortcut>
+        </DropdownMenuItem>
+        <DropdownMenuItem>
+          Settings
+          <DropdownMenuShortcut>⌘S</DropdownMenuShortcut>
+        </DropdownMenuItem>
+        <DropdownMenuItem>
+          Keyboard shortcuts
+          <DropdownMenuShortcut>⌘K</DropdownMenuShortcut>
+        </DropdownMenuItem>
+      </DropdownMenuGroup>   
+    </DropdownMenuContent>
+  </DropdownMenu>
   )
 }
 
